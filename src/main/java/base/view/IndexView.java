@@ -1,4 +1,4 @@
-package view;
+package base.view;
 
 public class IndexView {
 

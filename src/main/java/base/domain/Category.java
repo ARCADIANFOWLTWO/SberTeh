@@ -1,4 +1,4 @@
-package domain;
+package base.domain;
 
 public class Category {
 }
