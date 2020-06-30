@@ -1,10 +1,7 @@
 package base.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.Date;
 
 @Entity
 public class Task {
@@ -12,18 +9,21 @@ public class Task {
     @GeneratedValue
     private Long uid;
     private String name;
+    private String description;
+    private Boolean done;
+    private Date date;
+    private Long parentuId;
 
     public Task() {
-
     }
 
-    public Task(String name) {
-        this(null, name);
-    }
-
-    public Task(Long uid, String name) {
+    public Task(Long uid, Long parentuId, String name, String description, Boolean done, Date date) {
         this.uid = uid;
+        this.parentuId = parentuId;
         this.name = name;
+        this.description = description;
+        this.done = done;
+        this.date = date;
     }
 
     public void setUid(Long uid) {
@@ -34,6 +34,14 @@ public class Task {
         return uid;
     }
 
+    public void setParentuId(Long parentuId){
+        this.parentuId = parentuId;
+    }
+
+    public long getParentuId(){
+        return parentuId;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -41,15 +49,39 @@ public class Task {
     public String getName() {
         return name;
     }
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "list")
-    private Set<Category> tasks;
-
-    public Set<Category> getTasks() {
-        return tasks;
+    public void setDescription(String description){
+        this.description = description;
     }
 
-    public void setTasks(Set<Category> tasks) {
-        this.tasks = tasks;
+    public String getDescription(){
+        return description;
+    }
+
+    public void setDone(Boolean done){
+        this.done = done;
+    }
+
+    public Boolean getDone(){
+        return done;
+    }
+
+    public void setDate(Date date){
+        this.date = date;
+    }
+
+    public Date getDate(){
+        return date;
+    }
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "listuId", nullable = false)
+
+    private List list;
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
     }
 }
