@@ -8,7 +8,7 @@ public class Task {
     @Id
     @GeneratedValue
     private Long uid;
-    private String name;
+    private String title;
     private String description;
     private Boolean done;
     private Date date;
@@ -17,10 +17,10 @@ public class Task {
     public Task() {
     }
 
-    public Task(Long uid, Long parentuId, String name, String description, Boolean done, Date date) {
+    public Task(Long uid, Long parentuId, String title, String description, Boolean done, Date date) {
         this.uid = uid;
         this.parentuId = parentuId;
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.done = done;
         this.date = date;
@@ -42,12 +42,12 @@ public class Task {
         return parentuId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String title) {
+        this.title = title;
     }
 
     public String getName() {
-        return name;
+        return title;
     }
     public void setDescription(String description){
         this.description = description;
