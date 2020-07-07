@@ -7,48 +7,52 @@ import java.util.Date;
 public class Task {
     @Id
     @GeneratedValue
-    private Long uid;
+    private Long id;
+    private Long parentId;
     private String title;
     private String description;
     private Boolean done;
     private Date date;
-    private Long parentuId;
 
-    public Task() {
+    public Task(){
     }
 
-    public Task(Long uid, Long parentuId, String title, String description, Boolean done, Date date) {
-        this.uid = uid;
-        this.parentuId = parentuId;
+    public Task(Long parentId, String title){
+        this(null, parentId, title, null, false, null);
+    }
+    public Task(Long id, Long parentId, String title, String description, Boolean done, Date date) {
+        this.id = id;
+        this.parentId = parentId;
         this.title = title;
         this.description = description;
         this.done = done;
         this.date = date;
     }
 
-    public void setUid(Long uid) {
-        this.uid = uid;
+    public void setId(Long id){
+        this.id = id;
     }
 
-    public Long getUid() {
-        return uid;
+    public Long getId(){
+        return id;
     }
 
-    public void setParentuId(Long parentuId){
-        this.parentuId = parentuId;
+    public void setParentId(Long parentId){
+        this.parentId = parentId;
     }
 
-    public long getParentuId(){
-        return parentuId;
+    public Long getParentId(){
+        return parentId;
     }
 
-    public void setName(String title) {
+    public void setTitle(String title){
         this.title = title;
     }
 
-    public String getName() {
+    public String getTitle(){
         return title;
     }
+
     public void setDescription(String description){
         this.description = description;
     }
@@ -72,9 +76,9 @@ public class Task {
     public Date getDate(){
         return date;
     }
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "listuId", nullable = false)
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "listId", nullable = false)
     private List list;
 
     public List getList() {

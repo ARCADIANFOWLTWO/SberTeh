@@ -6,23 +6,31 @@ import java.util.Set;
 @Entity
 public class List {
     @Id
-    @GeneratedValue
-    private Long uid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
 
-    public List() {
+    public List(){
     }
 
-    public List(Long uid, String name) {
-        this.uid = uid;
+    public List(String name){
+        this(null, name);
+    }
+    public List(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
-    public Long getUid() {
-        return uid;
+
+    public void setId(Long id){
+        this.id = id;
     }
 
     public void setName(String name){
         this.name = name;
+    }
+
+    public Long getId(){
+        return id;
     }
 
     public String getName(){
