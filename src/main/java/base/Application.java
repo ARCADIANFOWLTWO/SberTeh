@@ -2,8 +2,10 @@ package base;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
+import base.repository.ListRepository;
 
 
 @ComponentScan
@@ -11,8 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
 public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(Application.class);
+        ListRepository repository= context.getBean(ListRepository.class);
 
-        //tasks.save(new TaskEntity(1L,"Починить утюг"));
     }
 }

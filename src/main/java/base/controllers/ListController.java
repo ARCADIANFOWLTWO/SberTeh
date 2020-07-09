@@ -35,9 +35,6 @@ public class ListController {
     public String getIndex(Model model, @PathVariable Long id){
         Map<Long, List> lists = getLists();
 
-        //Optional<List> list = listRepository.findById(id);
-        //Iterable<Task> tasks = list.getTask();
-
         model.addAttribute("lists", lists.values());
         model.addAttribute("currentList", lists.get(null));
         return "index";
@@ -51,23 +48,10 @@ public class ListController {
         }
         return result;
     }
-
-    /*@RequestMapping(value={"/addList"}, method=RequestMethod.GET)
-    public String listForm(Model model) {
-        model.addAttribute("addList", new List());
-        return "addList";
+    @RequestMapping(value = {"/index/{id}/delete"})
+    public String removeList(@PathVariable Long id) {
+        listRepository.deleteById(id);
+        return "redirect:/index";
     }
 
-    @RequestMapping(value={"/addList"}, method=RequestMethod.POST)
-    public String listSubmit(@ModelAttribute List addList) {
-        if(StringUtils.hasText(addList.getName())){
-            listRepository.save(new List(addList.getName()));
-            //Long id = result.getId();
-
-            //return "redirect:/index/" + id;
-        }
-
-
-        return "redirect:/index";
-    }*/
 }
