@@ -33,7 +33,7 @@ public class Task {
         this.id = id;
     }
 
-    public Long getId(){
+    public long getId(){
         return id;
     }
 
@@ -41,7 +41,7 @@ public class Task {
         this.parentId = parentId;
     }
 
-    public Long getParentId(){
+    public long getParentId(){
         return parentId;
     }
 

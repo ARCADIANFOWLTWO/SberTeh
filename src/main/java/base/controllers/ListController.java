@@ -1,17 +1,19 @@
 package base.controllers;
 
-//import antlr.StringUtils;
 import base.domain.List;
+import base.domain.Task;
 import base.repository.ListRepository;
+import base.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import antlr.StringUtils.*;
 
 
 @Controller
@@ -35,6 +37,9 @@ public class ListController {
     public String getIndex(Model model, @PathVariable Long id){
         Map<Long, List> lists = getLists();
 
+        //Optional<List> list = listRepository.findById(id);
+        //Iterable<Task> tasks = list.getTask();
+
         model.addAttribute("lists", lists.values());
         model.addAttribute("currentList", lists.get(null));
         return "index";
@@ -48,6 +53,8 @@ public class ListController {
         }
         return result;
     }
+
+
     @RequestMapping(value = {"/index/{id}/delete"})
     public String removeList(@PathVariable Long id) {
         listRepository.deleteById(id);
