@@ -2,9 +2,12 @@ package base.domain;
 
 import javax.persistence.*;
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
-public class Task {
+public class TaskE {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -12,20 +15,31 @@ public class Task {
     private String title;
     private String description;
     private Boolean done;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateDate;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    public Task(){
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "listId", nullable = false)
+    private ListE list;
+
+    public TaskE(){
     }
 
-    public Task(Long parentId, String title){
-        this(null, parentId, title, null, false, null);
+    public TaskE(Long parentId, String title){
+        this(null, parentId, title, null, false, null, null, null);
     }
-    public Task(Long id, Long parentId, String title, String description, Boolean done, Date date) {
+    public TaskE(Long id, Long parentId, String title, String description, Boolean done, Date createDate, Date updateDate, Date date) {
         this.id = id;
         this.parentId = parentId;
         this.title = title;
         this.description = description;
         this.done = done;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
         this.date = date;
     }
 
@@ -33,7 +47,7 @@ public class Task {
         this.id = id;
     }
 
-    public long getId(){
+    public Long getId(){
         return id;
     }
 
@@ -41,7 +55,7 @@ public class Task {
         this.parentId = parentId;
     }
 
-    public long getParentId(){
+    public Long getParentId(){
         return parentId;
     }
 
@@ -77,15 +91,18 @@ public class Task {
         return date;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "listId", nullable = false)
-    private List list;
-
-    public List getList() {
-        return list;
-    }
-
-    public void setList(List list) {
+    @JsonIgnore
+    public void setList(ListE list){
         this.list = list;
     }
+
+    public Long getListId(){
+        return list.getId();
+    }
+
+    public String getListName(){
+        return list.getName();
+    }
+
+
 }

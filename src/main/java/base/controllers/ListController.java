@@ -1,64 +1,123 @@
 package base.controllers;
 
-import base.domain.List;
-import base.domain.Task;
-import base.repository.ListRepository;
-import base.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.util.StringUtils;
 
+import base.domain.ListE;
+import base.domain.TaskE;
+import base.repository.ListRepository;
+import base.repository.TaskRepository;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 import antlr.StringUtils.*;
-
 
 @Controller
 public class ListController {
     @Autowired
     private ListRepository listRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
-    //@Autowired
-    //private TaskRepository taskRepository;
-
-    @RequestMapping(value ={"/", "/index"}, method = RequestMethod.GET)
+    @RequestMapping(value ={"/", "/list"}, method = RequestMethod.GET)
     public String getIndex(Model model){
-        Map<Long, List> lists = getLists();
-        //Iterable<List> lists = listRepository.findAll();
+        Map<Long, ListE> lists = getLists();
+        Iterable<TaskE> tasks = taskRepository.findAll();
+
         model.addAttribute("lists", lists.values());
         model.addAttribute("currentList", lists.get(null));
+        model.addAttribute("tasks", tasks);
         return "index";
     }
 
-    @RequestMapping(value = {"/index/{id}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/list/{id}"}, method = RequestMethod.GET)
     public String getIndex(Model model, @PathVariable Long id){
-        Map<Long, List> lists = getLists();
+        Map<Long, ListE> lists = getLists();
 
-        //Optional<List> list = listRepository.findById(id);
-        //Iterable<Task> tasks = list.getTask();
+        ListE list = listRepository.findById(id).get();
+        List<TaskE> tasks = taskRepository.findByList(list);
 
         model.addAttribute("lists", lists.values());
-        model.addAttribute("currentList", lists.get(null));
+        model.addAttribute("currentList", lists.get(id));
+        model.addAttribute("tasks", tasks);
         return "index";
     }
 
-    private  Map<Long, List> getLists(){
-        Map<Long, List> result = new HashMap<>();
-        Iterable<List> lists = listRepository.findAll();
-        for(List list: lists){
-            result.put(list.getId(), list);
+
+    private  Map<Long, ListE> getLists(){
+        Map<Long, ListE> result = new HashMap<>();
+        Iterable<ListE> lists = listRepository.findAll();
+        result.put(null, new ListE("Все"));
+
+        for(ListE entity: lists){
+            result.put(entity.getId(), entity);
         }
         return result;
     }
 
+    private Map<Long, TaskE> getTasks(Long id){
+        Map<Long, TaskE> result = new HashMap<>();
+        Iterable<TaskE> tasks = taskRepository.findAll();
 
-    @RequestMapping(value = {"/index/{id}/delete"})
-    public String removeList(@PathVariable Long id) {
-        listRepository.deleteById(id);
-        return "redirect:/index";
+        for (TaskE entity: tasks) {
+            if (entity.getParentId() == id)
+                result.put(entity.getId(), entity);
+        }
+        return result;
     }
 
+    @RequestMapping(value = {"/list/{id}/deleteList"})
+    public String removeList(@PathVariable Long id) {
+        listRepository.deleteById(id);
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = {"/task/{taskId}/deleteTask"})
+    public String removeTask(@PathVariable Long taskId) {
+        TaskE task = taskRepository.findById((long)taskId).get();
+        Long id = task.getParentId();
+        taskRepository.deleteById(taskId);
+        return "redirect:/";
+    }
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

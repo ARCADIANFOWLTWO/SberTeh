@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" >
-    <title>Добавление новой категории</title>
+    <title>Изменение категории</title>
     <link rel = "stylesheet" href="/assets/css/style.css">
     <link rel="shortcut icon" href="/assets/img/1.png" type="image/x-icon">
 </head>
@@ -10,10 +10,10 @@
 <body >
 <div  align="center">
     <div>
-        <h1>Новая категория</h1>
-        <form action="#" th:action="@{/addList}" th:object="${addList}" method="post">
+        <h1>Изменение категории</h1>
+        <form action="#" th:action="@{/list/{id}/updateList}" th:object="${list}" method="post">
             <div >
-                <p>Введите название:<input type="text"  th:field="*{name}" /></p>
+                <p>Введите название:<input type="text" name ="name" /></p>
                 <p><input type="submit"  value="Подтвердить" /> <input type="reset"  value="Сброс" /></p>
             </div>
         </form>
