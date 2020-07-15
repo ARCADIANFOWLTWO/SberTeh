@@ -19,9 +19,12 @@ public class UpdateController {
         return "/updateList";
     }
 
-    @RequestMapping(value={"/list/{id}/updateList"}, method=RequestMethod.POST)
-    public String updatelistSubmit(Model model, @PathVariable long id, @ModelAttribute("list") ListE list) {
-        return "redirect:/index/" + id;
+    @RequestMapping(value = {"/list/{id}/updateList"}, method = {RequestMethod.POST})
+    public String updateListSubmit(Model model, @PathVariable long id, @ModelAttribute("list") ListE list) {
+        ListE listToUpdate = listRepository.findById(id).get();
+        listToUpdate.setName(list.getName());
+        listRepository.save(listToUpdate);
+        return "redirect:/list/" + id;
     }
 
 }
