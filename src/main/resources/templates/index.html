@@ -47,7 +47,7 @@
             <td width="360" >
 
                 <div  class="box" th:each="list: ${lists}">
-                    <div class="box" align="center">
+                    <div class="box" align="left">
                         <a  th:href="@{/list/{id}(id=${list.getId()})}" th:utext="${list.getName()}"></a>
 
                     </div>
