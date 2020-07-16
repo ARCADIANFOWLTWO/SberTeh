@@ -52,15 +52,14 @@
 
                     </div>
                     <div class="box" >
-
                     </div>
                     <div class="box" align="right" >
-                        <a th:href="@{/list/{id}/updateList (id=${list.getId()})}">
+                        <a  th:href="@{/list/{id}/updateList (id=${list.getId()})}">
                             <button  class="button button1"  type="button">Изменить</button>
                         </a>
                     </div>
                     <div class="box" >
-                        <form align="right" action="#" th:action="@{/list/{id}/deleteList (id=${list.getId()})}">
+                        <form  align="right" action="#" th:action="@{/list/{id}/deleteList (id=${list.getId()})}">
                             <button  class="button button1" type="submit" >Удалить</button>
                         </form>
                     </div>
@@ -73,9 +72,26 @@
                         <h th:utext="${currentList.getName()}"></h>
                     </td>
                 </table>
-                <ul   th:each="task: ${tasks}">
-                    <li ><p th:href="@{/task/{id}(id=${task.getId()})}" th:utext="${task.getTitle()}"></p></li>
 
+                <ul   th:each="task: ${tasks}">
+
+                    <li ><p th:href="@{/task/{id}(id=${task.getId()})}" th:utext="${task.getTitle()}"></p></li>
+                    <div class="zz"  align="center">
+                        <div class="zz" role="alert" th:if="${task.done}">
+                            Выполнена!
+                        </div>
+                        <div class="zz"  role="alert" th:unless="${task.done}">
+                            Не выполнена!
+                        </div>
+                    </div>
+
+
+                    <div class="box" align="center" >
+                        <div class="box">
+                            <a th:href="@{/task/{idt}/updateTask (idt=${task.getId()})}">
+                            <button class="button button2" type="button" >Изменить</button>
+                        </a>
+                    </div>
                     <form   action="#" th:action="@{/task/{id}/deleteTask (id=${task.getId()})}">
                         <button type="submit" >Удалить</button>
                     </form>
